@@ -22,12 +22,31 @@ class ThumbnailItem(QtGui.QLabel):
 
         self.setMouseTracking(True)
 
+    #This hole block should be part of the overall Viewer
+    #As we build this object for every Element
+    #which is consuming ressources
+    def mousePressEvent(self, event):
+        position = event.globalPos()
+        # self.mapper = QtCore.QSignalMapper(self)
+
+        # for text in 'One Two Three'.split():
+        #     action = QtGui.QAction(text, self)
+        #     self.mapper.setMapping(action, text)
+        #     action.triggered.connect(self.mapper.map)
+        #     self.toolbar.addAction(action)
+
+        # if event.button() == QtCore.Qt.RightButton:
+        #     menu = QtGui.QMenu()
+        #     menu.addAction(self.tr("Edit person"))
+        #     menu.addAction(self.tr("Edit person"))
+        #     menu.addAction(self.tr("Edit person"))
+        #     menu.addAction(self.tr("Edit person"))
+        #     menu.addAction(self.tr("Edit person"))
+        #     menu.exec_(position)
 
 
     def mouseMoveEvent(self, event):
         currentFrame =  str(max(event.x()/4, 1)) 
-
-
         self.scrubValue = currentFrame.zfill(4)
         self.currentThumbFile = self.fileName + "." + self.scrubValue + ".jpg"
 

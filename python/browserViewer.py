@@ -26,11 +26,10 @@ data = [
     ]
 
 
-class BrowserCategories(QtGui.QWidget):
+class BrowserTreeViewer(QtGui.QWidget):
     categoryChanged = pyqtSignal(str, name='categoryChanged')
     def __init__(self):
-        
-    
+
         QtGui.QWidget.__init__(self)
         
         self.treeView = QtGui.QTreeView()
@@ -103,7 +102,6 @@ class ListWidget(QtGui.QListWidget):
     s = QSize()
     s.setHeight(super(ListWidget,self).sizeHint().height())
     s.setWidth(super(ListWidget,self).sizeHint().width())
-    #s.setWidth(self.sizeHintForColumn(0))
     return s
 
 
@@ -115,16 +113,20 @@ class BrowserViewer(ListWidget):
         super(BrowserViewer, self).__init__(parent)
         self.initUI()
         self.categoryChanged.connect(self.changeCategory)
+        self.customContextMenuRequested.connect(self.openMenu)
+
+    def openMenu(self):
+        print "pass"
 
     def changeCategory(self, item):
-        self.populateWidgets(self.pathCache[str(item)])
+        self.populateWidgets(settings.pathCache[str(item)])
 
    
     def initUI(self):
 
         widget = QtGui.QListWidget(self)
         widget.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
-        widget.itemSelectionChanged.connect(self.selectedItems)
+        #widget.itemSelectionChanged.connect(self.selectedItems)
         widget.setMinimumWidth(1024)
         widget.setMinimumHeight(1024)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
@@ -181,7 +183,7 @@ def main():
 
 
     browserViewer = BrowserViewer(None)
-    window = BrowserCategories()
+    window = BrowserTreeViewer()
     window.show()
     window.categoryChanged.connect(browserViewer.categoryChanged)
     sys.exit(app.exec_())
