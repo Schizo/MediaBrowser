@@ -26,23 +26,8 @@ class ThumbnailItem(QtGui.QLabel):
     #As we build this object for every Element
     #which is consuming ressources
     def mousePressEvent(self, event):
-        position = event.globalPos()
-        # self.mapper = QtCore.QSignalMapper(self)
+        print self.parent().parent.openMenu()
 
-        # for text in 'One Two Three'.split():
-        #     action = QtGui.QAction(text, self)
-        #     self.mapper.setMapping(action, text)
-        #     action.triggered.connect(self.mapper.map)
-        #     self.toolbar.addAction(action)
-
-        # if event.button() == QtCore.Qt.RightButton:
-        #     menu = QtGui.QMenu()
-        #     menu.addAction(self.tr("Edit person"))
-        #     menu.addAction(self.tr("Edit person"))
-        #     menu.addAction(self.tr("Edit person"))
-        #     menu.addAction(self.tr("Edit person"))
-        #     menu.addAction(self.tr("Edit person"))
-        #     menu.exec_(position)
 
 
     def mouseMoveEvent(self, event):
@@ -60,6 +45,7 @@ class BrowserViewerItem(QtGui.QLabel):
     def __init__(self, parent, filepath=None):
         super(BrowserViewerItem, self).__init__(parent=parent)
         self.setObjectName("thumbnail")
+        self.parent = parent
         #init layout
         self.widgetsLayout = QtGui.QVBoxLayout()
         self.widgetsLayout.setSpacing(0)

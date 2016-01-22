@@ -26,10 +26,11 @@ data = [
     ]
 
 
-class BrowserTreeViewer(QtGui.QWidget):
+class BrowserCategories(QtGui.QWidget):
     categoryChanged = pyqtSignal(str, name='categoryChanged')
     def __init__(self):
-
+        
+    
         QtGui.QWidget.__init__(self)
         
         self.treeView = QtGui.QTreeView()
@@ -97,43 +98,39 @@ class BrowserTreeViewer(QtGui.QWidget):
         
         menu.exec_(self.treeView.viewport().mapToGlobal(position))
 
-class ListWidget(QtGui.QListWidget):
-  def sizeHint(self):
-    s = QSize()
-    s.setHeight(super(ListWidget,self).sizeHint().height())
-    s.setWidth(super(ListWidget,self).sizeHint().width())
-    return s
 
-
-class BrowserViewer(ListWidget):
+class BrowserViewer(QtGui.QListWidget):
     
     categoryChanged = pyqtSignal(str, name='categoryChanged')
+    
+
     def __init__(self, parent):
         self.parent = parent
         super(BrowserViewer, self).__init__(parent)
         self.initUI()
         self.categoryChanged.connect(self.changeCategory)
+        self.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu )
         self.customContextMenuRequested.connect(self.openMenu)
 
-    def openMenu(self):
-        print "pass"
-
     def changeCategory(self, item):
-        self.populateWidgets(settings.pathCache[str(item)])
+        self.populateWidgets(self.pathCache[str(item)])
 
    
     def initUI(self):
 
-        widget = QtGui.QListWidget(self)
-        widget.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
-        #widget.itemSelectionChanged.connect(self.selectedItems)
-        widget.setMinimumWidth(1024)
-        widget.setMinimumHeight(1024)
+        self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
+        self.itemSelectionChanged.connect(self.selectedItems)
+        self.setMinimumWidth(640)
+        self.setMinimumHeight(640)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        widget.setSizePolicy(sizePolicy)
+        self.setSizePolicy(sizePolicy)
 
-        widget.setViewMode(QtGui.QListView.IconMode)
-        widget.setResizeMode(QtGui.QListView.Adjust)
+        quitAction = QAction("Quit", self)
+        quitAction.triggered.connect(qApp.quit)
+        self.addAction(quitAction)
+
+        self.setViewMode(QtGui.QListView.IconMode)
+        self.setResizeMode(QtGui.QListView.Adjust)
  
 
         self.itemHolder = []
@@ -142,10 +139,10 @@ class BrowserViewer(ListWidget):
         for pos in range(0, settings.thumbnails["numOfThumbnails"]):
             item = QtGui.QListWidgetItem()
             item.setSizeHint(QtCore.QSize(200,160))
-            widget.insertItem(pos, item)
-            previewWindow = BrowserViewerItem(widget, "None")
+            self.insertItem(pos, item)
+            previewWindow = BrowserViewerItem(self, "None")
             self.itemHolder.append(previewWindow)
-            widget.setItemWidget(item, previewWindow)
+            self.setItemWidget(item, previewWindow)
 
 
 
@@ -154,6 +151,10 @@ class BrowserViewer(ListWidget):
 
         self.setWindowTitle(settings.about["name"])
         self.show()
+
+
+    def openMenu(self):
+        print "openMenu"
 
     def selectedItems(self):
         print "waiting to be implemented"
@@ -183,7 +184,7 @@ def main():
 
 
     browserViewer = BrowserViewer(None)
-    window = BrowserTreeViewer()
+    window = BrowserCategories()
     window.show()
     window.categoryChanged.connect(browserViewer.categoryChanged)
     sys.exit(app.exec_())
