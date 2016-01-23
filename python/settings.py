@@ -5,10 +5,6 @@ thumbnails  = {
 about = {"Author":"Yafes Sahin", "Idea":["Julian Weiss", "Yafes Sahin"], "name":"Elementsbrowser", "version": "v. 0.2"}
 
 
-
-
-
-
 pathCache = {"Fire/Flames":['Fire/Flames/A003C003_140913_FPS60', 
 'Fire/Flames/A003C002_140913_FPS60', 
 'Fire/Flames/A003C004_140913_FPS60', 
@@ -46,3 +42,16 @@ pathCache = {"Fire/Flames":['Fire/Flames/A003C003_140913_FPS60',
 'Cloth/A002C023_140913_FPS120', 
 'Cloth/A002C024_140913_FPS120']
 }
+
+data = [
+    ("Cloth", []),
+    ("Fire", [
+        ("Flames", []),
+        ("Sparks", []),
+        ("Smoke", [])
+
+        ]),
+    ("Lensflares", [
+        ("Bokeh", [])
+    ])
+    ]

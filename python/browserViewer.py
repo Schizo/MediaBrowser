@@ -12,18 +12,7 @@ import settings
 from PyQt4.QtCore import pyqtSignal, QSize, Qt
 from PyQt4.QtGui import *
        
-data = [
-    ("Cloth", []),
-    ("Fire", [
-        ("Flames", []),
-        ("Sparks", []),
-        ("Smoke", [])
 
-        ]),
-    ("Lensflares", [
-        ("Bokeh", [])
-    ])
-    ]
 
 
 class BrowserCategories(QtGui.QWidget):
@@ -39,7 +28,7 @@ class BrowserCategories(QtGui.QWidget):
         self.treeView.clicked.connect(self.clicked)
         
         self.model = QtGui.QStandardItemModel()
-        self.addItems(self.model, data)
+        self.addItems(self.model, settings.data)
         self.treeView.setModel(self.model)
         
         self.model.setHorizontalHeaderLabels([self.tr("Object")])
@@ -120,8 +109,8 @@ class BrowserViewer(QtGui.QListWidget):
 
         self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
         self.itemSelectionChanged.connect(self.selectedItems)
-        self.setMinimumWidth(640)
-        self.setMinimumHeight(640)
+        #self.setMinimumWidth(640)
+        # self.setMinimumHeight(640)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.setSizePolicy(sizePolicy)
 
@@ -146,7 +135,7 @@ class BrowserViewer(QtGui.QListWidget):
 
 
 
-        self.setGeometry(300, 300, 1024, 1024)
+        #self.setGeometry(300, 300, 1024, 1024)
         self.populateWidgets(settings.pathCache['Fire/Flames'])
 
         self.setWindowTitle(settings.about["name"])

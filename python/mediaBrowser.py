@@ -4,7 +4,7 @@ from PyQt4 import QtGui, QtCore
 from browserViewer import BrowserViewer
 from browserViewer import BrowserCategories
 
-class ElementsBrowser(QtGui.QWidget):
+class ElementsBrowser(QtGui.QTabWidget):
     def __init__(self):
         super(ElementsBrowser, self).__init__()
         self.initUI()
@@ -14,23 +14,28 @@ class ElementsBrowser(QtGui.QWidget):
         #Todo: Add Vertical Spliter for
         hbox = QtGui.QHBoxLayout(self)
         browserCategories = BrowserCategories()
+        browserCategories.setMinimumWidth(200)
        
-        browserViewer = BrowserViewer(self)#QtGui.QWidget(self)
-        btn = QtGui.QPushButton("test")
+        browserViewer = BrowserViewer(self)
         browserCategories.categoryChanged.connect(browserViewer.categoryChanged)
 
-        
         splitter = QtGui.QSplitter(QtCore.Qt.Horizontal)
         splitter.addWidget(browserCategories)
         splitter.addWidget(browserViewer)
         splitter.setStretchFactor(1, 1)
-        splitter.setSizes([125, 150])
+        splitter.setSizes([200, 400])
+        self.setMinimumWidth(840)
+        self.setMinimumHeight(840)
         
         hbox.addWidget(splitter)
-        self.setLayout(hbox)
+        btn = QtGui.QPushButton("test")
+
+        self.addTab(splitter, "Yeah")
+        self.addTab(btn, "Manage Elements")
+        
+
         QtGui.QApplication.setStyle(QtGui.QStyleFactory.create('Cleanlooks'))
-        self.setGeometry(300, 300, 1160, 600)
-        self.setWindowTitle('QtGui.QSplitter')
+        self.setWindowTitle('ElementsBrowser')
         self.show()
 
 def main():
