@@ -113,7 +113,7 @@ class BrowserViewer(QtGui.QListWidget):
         self.customContextMenuRequested.connect(self.openMenu)
 
     def changeCategory(self, item):
-        self.populateWidgets(self.pathCache[str(item)])
+        self.populateWidgets(settings.pathCache[str(item)])
 
    
     def initUI(self):
