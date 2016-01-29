@@ -22,9 +22,21 @@ class ThumbnailItem(QtGui.QLabel):
 
         self.setMouseTracking(True)
 
+
     #This hole block should be part of the overall Viewer
     #As we build this object for every Element
     #which is consuming ressources
+
+    def dragEnterEvent(self, event):
+        print("dragEnterEvent")
+
+
+    def dragEnterEvent(self, e):
+        print "e"
+
+    def dropEvent(self, e):
+        print "dropped"
+
     def mousePressEvent(self, event):
         print self.parent().parent.openMenu()
 

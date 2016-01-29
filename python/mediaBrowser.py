@@ -32,7 +32,7 @@ class ElementsBrowser(QtGui.QTabWidget):
 
         self.addTab(splitter, "Yeah")
         self.addTab(btn, "Manage Elements")
-        
+            
 
         QtGui.QApplication.setStyle(QtGui.QStyleFactory.create('Cleanlooks'))
         self.setWindowTitle('ElementsBrowser')
