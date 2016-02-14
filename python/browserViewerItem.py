@@ -8,7 +8,8 @@ class ThumbnailItem(QtGui.QLabel):
     def __init__(self, parent, filepath=None):
         super(ThumbnailItem, self).__init__(parent=parent)
         self.setData(filepath)
-
+        self.setAcceptDrops(True)
+        
 
     def setData(self, filepath):
         self.rootPath = "Categories/"
@@ -27,18 +28,9 @@ class ThumbnailItem(QtGui.QLabel):
     #As we build this object for every Element
     #which is consuming ressources
 
-    def dragEnterEvent(self, event):
-        print("dragEnterEvent")
-
-
-    def dragEnterEvent(self, e):
-        print "e"
-
-    def dropEvent(self, e):
-        print "dropped"
-
     def mousePressEvent(self, event):
         print self.parent().parent.openMenu()
+        print "mousepressed"
 
 
 
@@ -125,5 +117,14 @@ class BrowserViewerItem(QtGui.QLabel):
             self.setVisible(False)
             self.topWidget.setVisible(False)
             self.bottomWidget.setVisible(False)
+
+    def dragEnterEvent(self, event):
+        print("dragEnterEvent")
+
+
+    def dropEvent(self, e):
+        print "dropped"
+
+
 
 

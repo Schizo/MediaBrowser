@@ -1,5 +1,9 @@
+
+
 thumbnails  = {
-	"numOfThumbnails":50
+	"numOfThumbnails":50,
+    "width":200,
+    "height":160
 }
 
 about = {"Author":"Yafes Sahin", "Idea":["Julian Weiss", "Yafes Sahin"], "name":"Elementsbrowser", "version": "v. 0.2"}

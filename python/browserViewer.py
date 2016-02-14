@@ -109,8 +109,6 @@ class BrowserViewer(QtGui.QListWidget):
 
         self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
         self.itemSelectionChanged.connect(self.selectedItems)
-        #self.setMinimumWidth(640)
-        # self.setMinimumHeight(640)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.setSizePolicy(sizePolicy)
 
@@ -127,7 +125,7 @@ class BrowserViewer(QtGui.QListWidget):
         #Initialize Empty Thumbnails 
         for pos in range(0, settings.thumbnails["numOfThumbnails"]):
             item = QtGui.QListWidgetItem()
-            item.setSizeHint(QtCore.QSize(200,160))
+            item.setSizeHint(QtCore.QSize(settings.thumbnails["width"], settings.thumbnails["height"]))
             self.insertItem(pos, item)
             previewWindow = BrowserViewerItem(self, "None")
             self.itemHolder.append(previewWindow)
@@ -148,6 +146,9 @@ class BrowserViewer(QtGui.QListWidget):
     def selectedItems(self):
         print "waiting to be implemented"
         pass
+
+    def dragEnterEvent(self, e):
+        print "dragging started."
 
     def populateWidgets(self, iterable):
         print len(iterable)
