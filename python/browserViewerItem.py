@@ -30,8 +30,7 @@ class ThumbnailItem(QtGui.QLabel):
 
     def mousePressEvent(self, event):
         print self.parent().parent.openMenu()
-        print "mousepressed"
-
+        print "mousepressed underneatch"
 
 
     def mouseMoveEvent(self, event):
@@ -44,8 +43,17 @@ class ThumbnailItem(QtGui.QLabel):
         
         self.setPixmap(self.pixmap)
 
+    def dragEnterEvent(self, e):
+        print "dragging started in BrowserViewerItem."
 
-class BrowserViewerItem(QtGui.QLabel):
+    def dragMoveEvent(self, e):
+        print "drag"
+
+    
+
+
+
+class BrowserViewerItem(QtGui.QWidget):
     def __init__(self, parent, filepath=None):
         super(BrowserViewerItem, self).__init__(parent=parent)
         self.setObjectName("thumbnail")
@@ -63,7 +71,6 @@ class BrowserViewerItem(QtGui.QLabel):
         self.topLayout.setSpacing(0)
         self.topLayout.setContentsMargins(1, 1, 1, 1)
 
-        
 
         self.topWidget.setLayout(self.topLayout)
 
@@ -118,8 +125,9 @@ class BrowserViewerItem(QtGui.QLabel):
             self.topWidget.setVisible(False)
             self.bottomWidget.setVisible(False)
 
-    def dragEnterEvent(self, event):
-        print("dragEnterEvent")
+
+    def dragEnterEvent(self, e):
+        print "dragging started."
 
 
     def dropEvent(self, e):
