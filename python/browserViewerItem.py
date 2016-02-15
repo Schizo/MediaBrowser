@@ -8,7 +8,9 @@ class ThumbnailItem(QtGui.QLabel):
     def __init__(self, parent, filepath=None):
         super(ThumbnailItem, self).__init__(parent=parent)
         self.setData(filepath)
-        self.setAcceptDrops(True)
+        #self.setAcceptDrops(True)
+
+        self.text = "wvisssss"
         
 
     def setData(self, filepath):
@@ -43,11 +45,50 @@ class ThumbnailItem(QtGui.QLabel):
         
         self.setPixmap(self.pixmap)
 
-    def dragEnterEvent(self, e):
-        print "dragging started in BrowserViewerItem."
+    def mousePressEvent(self, event):
+        if event.button() == QtCore.Qt.LeftButton:
+            print 2
+            drag = QtGui.QDrag(self)
+            mimeData = QtCore.QMimeData()
+            drag.setMimeData(mimeData)
 
-    def dragMoveEvent(self, e):
-        print "drag"
+            drag.setPixmap(QtGui.QPixmap.fromImage(self.createPixmap()))
+            drag.start()
+            #dropAction = drag.start(QtCore.Qt.MoveAction)
+
+
+    # def mouseMoveEvent(self, e):
+    #     drag = QtGui.QDrag(self)
+    #     mimeData = QtCore.QMimeData()
+    #     drag.setMimeData(mimeData)
+
+    #     drag.setPixmap(QtGui.QPixmap.fromImage(self.createPixmap()))
+    #     dropAction = drag.start(QtCore.Qt.MoveAction)
+
+    def createPixmap(self):
+        """Creates the pixmap shown when this label is dragged."""
+        font_metric = QtGui.QFontMetrics(QtGui.QFont())
+        text_size = font_metric.size(QtCore.Qt.TextSingleLine, self.text)
+        image = QtGui.QImage(text_size.width() + 4, text_size.height() + 4,
+            QtGui.QImage.Format_ARGB32_Premultiplied)
+        image.fill(QtGui.qRgba(240, 140, 120, 255))
+
+        painter = QtGui.QPainter()
+        painter.begin(image)
+        painter.setFont(QtGui.QFont())
+        painter.setBrush(QtCore.Qt.black)
+        painter.drawText(QtCore.QRect(QtCore.QPoint(2, 2), text_size), QtCore.Qt.AlignCenter,
+            self.text)
+        painter.end()
+        return image
+
+
+
+    # def dragEnterEvent(self, e):
+    #     print "dragging started in BrowserViewerItem."
+
+    # def dragMoveEvent(self, e):
+    #     print "drag"
 
     
 
@@ -126,12 +167,12 @@ class BrowserViewerItem(QtGui.QWidget):
             self.bottomWidget.setVisible(False)
 
 
-    def dragEnterEvent(self, e):
-        print "dragging started."
+    # def dragEnterEvent(self, e):
+    #     print "dragging started."
 
 
-    def dropEvent(self, e):
-        print "dropped"
+    # def dropEvent(self, e):
+    #     print "dropped"
 
 
 

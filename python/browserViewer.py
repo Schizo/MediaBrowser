@@ -36,6 +36,7 @@ class BrowserCategories(QtGui.QWidget):
         layout = QtGui.QVBoxLayout()
         layout.addWidget(self.treeView)
         self.setLayout(layout)
+
     
     def addItems(self, parent, elements):
         for text, children in elements:
