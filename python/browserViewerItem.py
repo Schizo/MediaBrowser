@@ -1,24 +1,24 @@
 import os
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import QObject, pyqtSignal
+from PyQt4.QtGui import *
 
 
 class ThumbnailItem(QtGui.QLabel):
     """Represents an Elemement within a view, contains an Image and TextFields"""
 
-    itemDragged = pyqtSignal(str, name='itemDragged')
+    signalItemDragged = pyqtSignal(str, name='itemDragged')
 
     def __init__(self, parent, filepath=None):
         super(ThumbnailItem, self).__init__(parent=parent)
         self.setData(filepath)
         self.setAcceptDrops(True)
-        self.itemDragged.connect(parent.itemDragged)
+        self.signalItemDragged.connect(parent.signalItemDragged)
 
         self.text = "wvisssss"
         
 
     def setData(self, filepath):
-        print filepath
         self.id = filepath
         self.rootPath = "Categories/"
         head, self.fileName = os.path.split(filepath)
@@ -52,18 +52,20 @@ class ThumbnailItem(QtGui.QLabel):
         self.setPixmap(self.pixmap)
 
     def mousePressEvent(self, event):
-        self.itemDragged.emit(self.id)
+        self.signalItemDragged.emit(self.id)
         if event.button() == QtCore.Qt.LeftButton:
-            drag = QtGui.QDrag(self)
-            mimeData = QtCore.QMimeData()
-            mimeData.setText(self.id)
-            drag.setMimeData(mimeData)
+            
+            print "owww"
+            # drag = QtGui.QDrag(self)
+            # mimeData = QtCore.QMimeData()
+            # mimeData.setText(self.id)
+            # drag.setMimeData(mimeData)
 
-            drag.setPixmap(QtGui.QPixmap.fromImage(self.createPixmap()))
-            if drag.exec_(QtCore.Qt.CopyAction | QtCore.Qt.MoveAction) == QtCore.Qt.MoveAction:
-                print 'moved'
-            else:
-                print 'copied'
+            # drag.setPixmap(QtGui.QPixmap.fromImage(self.createPixmap()))
+            # if drag.exec_(QtCore.Qt.CopyAction | QtCore.Qt.MoveAction) == QtCore.Qt.MoveAction:
+            #     print 'moved'
+            # else:
+            #     print 'copied'
             #drag.exec_()
             #dropAction = drag.start(QtCore.Qt.MoveAction)
 

@@ -17,7 +17,7 @@ from mimeGenerator import MimeGenerator
 class BrowserViewer(QtGui.QListWidget):
     
     categoryChanged = pyqtSignal(str, name='categoryChanged')
-    itemDragged = pyqtSignal(str, name='itemDragged')
+    signalItemDragged = pyqtSignal(str, name='itemDragged')
     
 
     def __init__(self, parent):
@@ -28,10 +28,12 @@ class BrowserViewer(QtGui.QListWidget):
         
         self.mimeGenerator = MimeGenerator(self)
         self.categoryChanged.connect(self.changeCategory)
-        self.itemDragged.connect(self.mimeGenerator.itemDragged)
+        self.signalItemDragged.connect(self.mimeGenerator.signalItemDragged)
 
         self.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu )
         self.customContextMenuRequested.connect(self.openMenu)
+
+
 
 
     def changeCategory(self, item):
@@ -64,7 +66,6 @@ class BrowserViewer(QtGui.QListWidget):
             previewWindow = BrowserViewerItem(self, "None")
             self.itemHolder.append(previewWindow)
             self.setItemWidget(item, previewWindow)
- 
 
 
         #self.setGeometry(300, 300, 1024, 1024)
@@ -85,14 +86,9 @@ class BrowserViewer(QtGui.QListWidget):
         print "dragging started."
 
     def populateWidgets(self, iterable):
-        print len(iterable)
         for index, element in enumerate(iterable.keys()):
-            #print element[settings.Meta.PATH][element]
             self.itemHolder[index].thumbnailItem.setData(element)
             self.itemHolder[index].setActive(True)
-        # for index, element in enumerate(iterable):
-        #     self.itemHolder[index].thumbnailItem.setData(element[settings.Meta.PATH])
-        #     self.itemHolder[index].setActive(True)
 
         #If there are too many, override them with blank
         for index in range(len(iterable), settings.thumbnails["numOfThumbnails"]):
