@@ -9,7 +9,7 @@
 QGraphicsView#CategoriesTitle
 {
 color:white;
-border-image:url("../ressources/images/categoriesTitle.png");
+border-image:url("../resources/images/categoriesTitle.png");
 }
 
 
@@ -17,7 +17,7 @@ QFrame#Header
 {
 background-color:white;
 color:white;
-background-image:url("../ressources/images/assetBrowser.jpg");
+background-image:url("../resources/images/assetBrowser.jpg");
 background-color: 1c1c1c;
 background-repeat:none;
 
@@ -77,7 +77,7 @@ QCheckBox::indicator{
 }
 QCheckBox#Favorite::indicator:checked
 {
-    image:url("../ressources/images/checkbox.png");
+    image:url("../resources/images/checkbox.png");
 }
 
 QCheckBox#Favorite{
@@ -129,15 +129,15 @@ QTreeView::item:selected:!active  {
 }
 
 QTreeView::branch:has-siblings:!adjoins-item {
-  border-image: url("../ressources/images/stylesheet-vline.png") 0;
+  border-image: url("../resources/images/stylesheet-vline.png") 0;
 }
 
  QTreeView::branch:has-siblings:adjoins-item {
-     border-image: url("../ressources/images/stylesheet-branch-more.png") 0;
+     border-image: url("../resources/images/stylesheet-branch-more.png") 0;
  }
 
  QTreeView::branch:!has-children:!has-siblings:adjoins-item {
-     border-image: url("../ressources/images/stylesheet-branch-end.png") 0;
+     border-image: url("../resources/images/stylesheet-branch-end.png") 0;
  }
 
  QTreeView::item:selected:active{
@@ -145,7 +145,7 @@ QTreeView::branch:has-siblings:!adjoins-item {
  }
 
  QTreeView::branch:open:hover{
-    border-image: url("../ressources/images/branch-open.png") 0;
+    border-image: url("../resources/images/branch-open.png") 0;
 
  
  }
@@ -154,7 +154,7 @@ QTreeView::branch:has-siblings:!adjoins-item {
 QTreeView::branch:open:has-children:!has-siblings,
  QTreeView::branch:open:has-children:has-siblings  {
          border-image: none;
-         image: url("../ressources/images/branch-open.png");
+         image: url("../resources/images/branch-open.png");
 
 
  }
@@ -162,7 +162,7 @@ QTreeView::branch:open:has-children:!has-siblings,
 QTreeView::branch:has-children:!has-siblings:closed,
  QTreeView::branch:closed:has-children:has-siblings {
          border-image: none;    
-         image: url("../ressources/images/branch-closed.png");
+         image: url("../resources/images/branch-closed.png");
  }
 
 
@@ -197,7 +197,7 @@ QScrollBar:vertical
 
 QScrollBar::handle:vertical
 {
-      image: url("../ressources/images/scrollHandle.png");
+      image: url("../resources/images/scrollHandle.png");
       background: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #545454, stop: 1 #4a4a4a);
       min-height: 20px;
       border-radius: 2px;
@@ -226,13 +226,13 @@ QScrollBar::sub-line:vertical
 
 QScrollBar::up-arrow:vertical
 {
-      image: url("../ressources/images/upArrow.png");
+      image: url("../resources/images/upArrow.png");
       background: #565656;
 }
 
  QScrollBar::down-arrow:vertical
  {
-      image: url("../ressources/images/downArrow.png");
+      image: url("../resources/images/downArrow.png");
       background: #565656;
 }
 
@@ -301,7 +301,7 @@ QLabel#fileName{
 
 QCheckBox#Favorite::indicator
 {
-    image:url("../ressources/images/favorite-inactive.png");
+    image:url("../resources/images/favorite-inactive.png");
     border:0px;
     height: 20px;
     width:20px;
@@ -317,7 +317,7 @@ QVBoxLayout{
 
 QCheckBox#Favorite::indicator:checked
 {
-    image:url("../ressources/images/favorite.png");
+    image:url("../resources/images/favorite.png");
     border:0px;
     height: 20px;
     width:20px;

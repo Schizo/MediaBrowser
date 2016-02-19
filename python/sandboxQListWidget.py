@@ -237,11 +237,11 @@ class BrowserViewer(QtGui.QWidget):
 
 
 def main():
-    
+
     app = QtGui.QApplication(sys.argv)
 
     #Load Stye Sheet
-    with open("../ressources/style.qss", "r") as myfile:
+    with open("../resources/style.qss", "r") as myfile:
         data = ' '.join([line.replace('\n', '') for line in myfile.readlines()])
     app.setStyleSheet(data)
 
