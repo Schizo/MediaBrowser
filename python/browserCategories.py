@@ -26,6 +26,10 @@ class BrowserCategories(QtGui.QWidget):
         self.setLayout(layout)
 
     
+        # make rows not editable
+        self.treeView.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+
+
     def addItems(self, parent, elements):
         for text, children in elements:
             item = QtGui.QStandardItem(text)
