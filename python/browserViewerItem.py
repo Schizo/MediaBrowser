@@ -31,31 +31,22 @@ class ThumbnailItem(QtGui.QLabel):
 
         self.setMouseTracking(True)
 
-        # get number of thumbnails available
-        count = 0
-        print (self.fileName + "." + str(count).zfill(4) + ".jpg")
-        while os.path.exists(self.pathForThumb(count + 1)):
-            count += 1
-
-        return count
-
-    def pathForThumb(self, n):
-        return os.path.join(self.dirPath, self.fileName + "." + str(n).zfill(4) + ".jpg")
 
     #This hole block should be part of the overall Viewer
     #As we build this object for every Element
-    #which is consuming resources
+    #which is consuming ressources
 
     def mousePressEvent(self, event):
         print self.parent().parent.openMenu()
-        print "mousepressed underneath"
+        print "mousepressed underneatch"
 
 
     def mouseMoveEvent(self, event):
-        currentFrame =  str(max(event.x()/4, 1))
+        currentFrame =  str(max(event.x()/4, 1)) 
         self.scrubValue = currentFrame.zfill(4)
+        self.currentThumbFile = self.fileName + "." + self.scrubValue + ".jpg"
 
-        newPath = self.pathForThumb(self.scrubValue)
+        newPath = os.path.join(self.dirPath, self.currentThumbFile)
         self.pixmap = QtGui.QPixmap(newPath)
         
         self.setPixmap(self.pixmap)
@@ -174,11 +165,6 @@ class BrowserViewerItem(QtGui.QWidget):
         #Make Childs invisible
         self.topWidget.setVisible(False)
         self.bottomWidget.setVisible(False)
-
-    # TODO: refactor to have separate model objects for items
-    #       so this class is the view
-    def setFrames(self, n):
-        self.frameInfo.setText(str.format("#{} Frames @ 60fps", n))
 
     def setActive(self, isActive):
         #Refactor this, there is a bug, theoretically

@@ -87,8 +87,7 @@ class BrowserViewer(QtGui.QListWidget):
 
     def populateWidgets(self, iterable):
         for index, element in enumerate(iterable.keys()):
-            thumbcount = self.itemHolder[index].thumbnailItem.setData(element)
-            self.itemHolder[index].setFrames(thumbcount)
+            self.itemHolder[index].thumbnailItem.setData(element)
             self.itemHolder[index].setActive(True)
 
         #If there are too many, override them with blank
