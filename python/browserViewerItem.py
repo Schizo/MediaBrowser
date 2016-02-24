@@ -2,7 +2,7 @@ import os
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import QObject, pyqtSignal
 from PyQt4.QtGui import *
-
+import settings
 
 class ThumbnailItem(QtGui.QLabel):
     """Represents an Elemement within a view, contains an Image and TextFields"""
@@ -23,8 +23,10 @@ class ThumbnailItem(QtGui.QLabel):
         self.rootPath = "Categories/"
         head, self.fileName = os.path.split(filepath)
 
-        self.dirPath = self.rootPath + filepath + "/Thumbnails/"
+        #todo get rid of hardcoded slashes
+        self.dirPath = self.rootPath + settings.currentCategory + "/" + filepath + "/Thumbnails/"
         self.composedPath =  self.dirPath + self.fileName +  ".0001.jpg"
+        print self.composedPath
         
         self.pixmap = QtGui.QPixmap(self.composedPath)
         self.setPixmap(self.pixmap)

@@ -38,6 +38,8 @@ class BrowserViewer(QtGui.QListWidget):
 
     def changeCategory(self, item):
         self.currentCategory = str(item)
+        settings.currentCategory = self.currentCategory #todo make it less locally dependend, 
+        #as this one is called from the browserViewerItems
         self.populateWidgets(settings.pathCache[self.currentCategory])
 
    
@@ -86,13 +88,23 @@ class BrowserViewer(QtGui.QListWidget):
         print "dragging started."
 
     def populateWidgets(self, iterable):
+        #print iterable
         for index, element in enumerate(iterable.keys()):
+            #print element
             self.itemHolder[index].thumbnailItem.setData(element)
             self.itemHolder[index].setActive(True)
 
         #If there are too many, override them with blank
         for index in range(len(iterable), settings.thumbnails["numOfThumbnails"]):
             self.itemHolder[index].setActive(False)
+
+        # for index, element in enumerate(iterable.keys()):
+        #     self.itemHolder[index].thumbnailItem.setData(element)
+        #     self.itemHolder[index].setActive(True)
+
+        # #If there are too many, override them with blank
+        # for index in range(len(iterable), settings.thumbnails["numOfThumbnails"]):
+        #     self.itemHolder[index].setActive(False)
 
 
 

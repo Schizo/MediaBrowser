@@ -24,7 +24,7 @@ class MimeGenerator(QObject):
         #print settings.pathCache[self.parent.currentCategory][str(itemID)]
         drag = QtGui.QDrag(self.parent)
         mimeData = QtCore.QMimeData()
-        mimeData.setText(itemID)
+        mimeData.setText(self.generateNukeTCL())
         drag.setMimeData(mimeData)
 
         drag.setPixmap(QtGui.QPixmap.fromImage(self.createPixmap()))
@@ -39,7 +39,11 @@ class MimeGenerator(QObject):
         command = ""
         command += """Read {
             inputs 0
-            file C:/Users/PC/Desktop/Projects/Elementsbrowser/ElementsBrowserPY/python/Categories/Cloth/A002C002_140913_FPS120/Thumbnails/A002C002_140913_FPS120.1001.jpg}"""
+            file C:/Users/PC/Desktop/Projects/Elementsbrowser/ElementsBrowserPY/python/Categories/Cloth/A002C002_140913_FPS120/Thumbnails/A002C002_140913_FPS120.####.jpg
+            
+
+
+            }"""
         return command
 
 
