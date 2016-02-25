@@ -32,8 +32,7 @@ class MimeGenerator(QObject):
             print 'moved'
         else:
             print 'copied'
-
-
+            
 
     def generateNukeTCL(self):
         command = ""

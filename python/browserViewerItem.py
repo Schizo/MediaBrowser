@@ -16,22 +16,24 @@ class ThumbnailItem(QtGui.QLabel):
         self.signalItemDragged.connect(parent.signalItemDragged)
 
         self.text = "wvisssss"
-        
+        self.key = ""    
 
-    def setData(self, filepath):
-        self.id = filepath
+    def setData(self, fileName):
+        self.id = settings.currentCategory + "/" + fileName
         self.rootPath = "Categories/"
-        head, self.fileName = os.path.split(filepath)
+
+        head, self.fileName = os.path.split(fileName)
+
 
         #todo get rid of hardcoded slashes
-        self.dirPath = self.rootPath + settings.currentCategory + "/" + filepath + "/Thumbnails/"
+        self.dirPath = self.rootPath + settings.currentCategory + "/" + fileName + "/Thumbnails/"
         self.composedPath =  self.dirPath + self.fileName +  ".0001.jpg"
-        print self.composedPath
         
         self.pixmap = QtGui.QPixmap(self.composedPath)
         self.setPixmap(self.pixmap)
 
         self.setMouseTracking(True)
+
 
 
     #This hole block should be part of the overall Viewer
@@ -40,7 +42,6 @@ class ThumbnailItem(QtGui.QLabel):
 
     def mousePressEvent(self, event):
         print self.parent().parent.openMenu()
-        print "mousepressed underneatch"
 
 
     def mouseMoveEvent(self, event):
@@ -182,13 +183,14 @@ class BrowserViewerItem(QtGui.QWidget):
             self.bottomWidget.setVisible(False)
 
 
-    # def dragEnterEvent(self, e):
-    #     print "dragging started."
+    #todo, better string formatting
+    def setData(self, fileName):
+        numOfFrames = settings.pathCache[settings.currentCategory][fileName]["numOfFrames"]
+        height      = settings.pathCache[settings.currentCategory][fileName]["height"]
+        width       = settings.pathCache[settings.currentCategory][fileName]["width"]
+        fps         = settings.pathCache[settings.currentCategory][fileName]["fps"]
+        startFrame  = settings.pathCache[settings.currentCategory][fileName]["startFrame"]
+        index  = settings.pathCache[settings.currentCategory][fileName]["id"]
 
-
-    # def dropEvent(self, e):
-    #     print "dropped"
-
-
-
-
+        self.frameInfo.setText(numOfFrames + " @ " + fps + " fps")
+        self.id.setText("# " + str(index))

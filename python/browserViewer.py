@@ -34,15 +34,13 @@ class BrowserViewer(QtGui.QListWidget):
         self.customContextMenuRequested.connect(self.openMenu)
 
 
-
-
     def changeCategory(self, item):
         self.currentCategory = str(item)
         settings.currentCategory = self.currentCategory #todo make it less locally dependend, 
         #as this one is called from the browserViewerItems
         self.populateWidgets(settings.pathCache[self.currentCategory])
-
    
+
     def initUI(self):
 
         self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
@@ -80,31 +78,27 @@ class BrowserViewer(QtGui.QListWidget):
     def openMenu(self):
         print "openMenu"
 
+
     def selectedItems(self):
         print "waiting to be implemented"
         pass
 
+
     def dragEnterEvent(self, e):
         print "dragging started."
+
 
     def populateWidgets(self, iterable):
         #print iterable
         for index, element in enumerate(iterable.keys()):
             #print element
             self.itemHolder[index].thumbnailItem.setData(element)
+            self.itemHolder[index].setData(element)
             self.itemHolder[index].setActive(True)
 
         #If there are too many, override them with blank
         for index in range(len(iterable), settings.thumbnails["numOfThumbnails"]):
             self.itemHolder[index].setActive(False)
-
-        # for index, element in enumerate(iterable.keys()):
-        #     self.itemHolder[index].thumbnailItem.setData(element)
-        #     self.itemHolder[index].setActive(True)
-
-        # #If there are too many, override them with blank
-        # for index in range(len(iterable), settings.thumbnails["numOfThumbnails"]):
-        #     self.itemHolder[index].setActive(False)
 
 
 
