@@ -19,7 +19,7 @@ class ThumbnailItem(QtGui.QLabel):
         self.key = ""    
 
     def setData(self, fileName):
-        self.id = settings.currentCategory + "/" + fileName
+        self.fileName = fileName
         self.rootPath = "Categories/"
 
         head, self.fileName = os.path.split(fileName)
@@ -55,7 +55,7 @@ class ThumbnailItem(QtGui.QLabel):
         self.setPixmap(self.pixmap)
 
     def mousePressEvent(self, event):
-        self.signalItemDragged.emit(self.id)
+        self.signalItemDragged.emit(self.fileName)
         if event.button() == QtCore.Qt.LeftButton:
             
             print "owww"
@@ -185,12 +185,12 @@ class BrowserViewerItem(QtGui.QWidget):
 
     #todo, better string formatting
     def setData(self, fileName):
-        numOfFrames = settings.pathCache[settings.currentCategory][fileName]["numOfFrames"]
-        height      = settings.pathCache[settings.currentCategory][fileName]["height"]
-        width       = settings.pathCache[settings.currentCategory][fileName]["width"]
-        fps         = settings.pathCache[settings.currentCategory][fileName]["fps"]
-        startFrame  = settings.pathCache[settings.currentCategory][fileName]["startFrame"]
-        index  = settings.pathCache[settings.currentCategory][fileName]["id"]
+        self.numOfFrames = settings.pathCache[settings.currentCategory][fileName]["numOfFrames"]
+        self.height      = settings.pathCache[settings.currentCategory][fileName]["height"]
+        self.width       = settings.pathCache[settings.currentCategory][fileName]["width"]
+        self.fps         = settings.pathCache[settings.currentCategory][fileName]["fps"]
+        self.startFrame  = settings.pathCache[settings.currentCategory][fileName]["startFrame"]
+        self.index      = settings.pathCache[settings.currentCategory][fileName]["id"]
 
-        self.frameInfo.setText(numOfFrames + " @ " + fps + " fps")
-        self.id.setText("# " + str(index))
+        self.frameInfo.setText(self.numOfFrames + " @ " + self.fps + " fps")
+        self.id.setText("# " + str(self.index))

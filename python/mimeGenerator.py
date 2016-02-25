@@ -20,7 +20,8 @@ class MimeGenerator(QObject):
 
 
     def itemDragged(self, itemID ):
-        print "ywaaa"
+    	self.metaData =  settings.pathCache[settings.currentCategory][str(itemID)]
+
         #print settings.pathCache[self.parent.currentCategory][str(itemID)]
         drag = QtGui.QDrag(self.parent)
         mimeData = QtCore.QMimeData()
@@ -32,17 +33,18 @@ class MimeGenerator(QObject):
             print 'moved'
         else:
             print 'copied'
-            
+
 
     def generateNukeTCL(self):
         command = ""
-        command += """Read {
+        command += """Read {{
             inputs 0
             file C:/Users/PC/Desktop/Projects/Elementsbrowser/ElementsBrowserPY/python/Categories/Cloth/A002C002_140913_FPS120/Thumbnails/A002C002_140913_FPS120.####.jpg
-            
-
-
-            }"""
+            origfirst {startFrame}
+            origlast {startFrame} + {numOfFrames}
+            first {startFrame}
+            label Elementsbrowser ID # {id}
+            }}""".format(**self.metaData)
         return command
 
 
