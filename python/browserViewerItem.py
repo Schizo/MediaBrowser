@@ -20,13 +20,12 @@ class ThumbnailItem(QtGui.QLabel):
 
     def setData(self, fileName):
         self.fileName = fileName
-        self.rootPath = "Categories/"
 
         head, self.fileName = os.path.split(fileName)
 
 
         #todo get rid of hardcoded slashes
-        self.dirPath = self.rootPath + settings.currentCategory + "/" + fileName + "/Thumbnails/"
+        self.dirPath = settings.rootPath + settings.currentCategory + "/" + fileName + "/Thumbnails/"
         self.composedPath =  self.dirPath + self.fileName +  ".0001.jpg"
         
         self.pixmap = QtGui.QPixmap(self.composedPath)
@@ -192,5 +191,5 @@ class BrowserViewerItem(QtGui.QWidget):
         self.startFrame  = settings.pathCache[settings.currentCategory][fileName]["startFrame"]
         self.index      = settings.pathCache[settings.currentCategory][fileName]["id"]
 
-        self.frameInfo.setText(self.numOfFrames + " @ " + self.fps + " fps")
+        self.frameInfo.setText(str(self.numOfFrames) + " @ " + str(self.fps) + " fps")
         self.id.setText("# " + str(self.index))

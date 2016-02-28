@@ -41,10 +41,11 @@ class MimeGenerator(QObject):
             inputs 0
             file C:/Users/PC/Desktop/Projects/Elementsbrowser/ElementsBrowserPY/python/Categories/Cloth/A002C002_140913_FPS120/Thumbnails/A002C002_140913_FPS120.####.jpg
             origfirst {startFrame}
-            origlast {startFrame} + {numOfFrames}
+            origlast {startFrame}
             first {startFrame}
-            label Elementsbrowser ID # {id}
-            }}""".format(**self.metaData)
+            format {imageWidth}
+            label \"ElementsbrowserID# {id} \"
+            }}""".format(**self.metaData) 
         return command
 
 
