@@ -16,22 +16,23 @@ class ThumbnailItem(QtGui.QLabel):
         self.signalItemDragged.connect(parent.signalItemDragged)
 
         self.text = "wvisssss"
-        
+        self.key = ""    
 
-    def setData(self, filepath):
-        self.id = filepath
-        self.rootPath = "Categories/"
-        head, self.fileName = os.path.split(filepath)
+    def setData(self, fileName):
+        self.fileName = fileName
+
+        head, self.fileName = os.path.split(fileName)
+
 
         #todo get rid of hardcoded slashes
-        self.dirPath = self.rootPath + settings.currentCategory + "/" + filepath + "/Thumbnails/"
+        self.dirPath = settings.rootPath + settings.currentCategory + "/" + fileName + "/Thumbnails/"
         self.composedPath =  self.dirPath + self.fileName +  ".0001.jpg"
-        print self.composedPath
         
         self.pixmap = QtGui.QPixmap(self.composedPath)
         self.setPixmap(self.pixmap)
 
         self.setMouseTracking(True)
+
 
 
     #This hole block should be part of the overall Viewer
@@ -40,7 +41,6 @@ class ThumbnailItem(QtGui.QLabel):
 
     def mousePressEvent(self, event):
         print self.parent().parent.openMenu()
-        print "mousepressed underneatch"
 
 
     def mouseMoveEvent(self, event):
@@ -54,7 +54,7 @@ class ThumbnailItem(QtGui.QLabel):
         self.setPixmap(self.pixmap)
 
     def mousePressEvent(self, event):
-        self.signalItemDragged.emit(self.id)
+        self.signalItemDragged.emit(self.fileName)
         if event.button() == QtCore.Qt.LeftButton:
             
             print "owww"
@@ -182,13 +182,14 @@ class BrowserViewerItem(QtGui.QWidget):
             self.bottomWidget.setVisible(False)
 
 
-    # def dragEnterEvent(self, e):
-    #     print "dragging started."
+    #todo, better string formatting
+    def setData(self, fileName):
+        self.numOfFrames = settings.pathCache[settings.currentCategory][fileName]["numOfFrames"]
+        self.height      = settings.pathCache[settings.currentCategory][fileName]["height"]
+        self.width       = settings.pathCache[settings.currentCategory][fileName]["width"]
+        self.fps         = settings.pathCache[settings.currentCategory][fileName]["fps"]
+        self.startFrame  = settings.pathCache[settings.currentCategory][fileName]["startFrame"]
+        self.index      = settings.pathCache[settings.currentCategory][fileName]["id"]
 
-
-    # def dropEvent(self, e):
-    #     print "dropped"
-
-
-
-
+        self.frameInfo.setText(str(self.numOfFrames) + " @ " + str(self.fps) + " fps")
+        self.id.setText("# " + str(self.index))
