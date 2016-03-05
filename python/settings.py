@@ -36,6 +36,8 @@ def sourcePath(categoryName, fileName):
     return os.path.join(rootPath, categoryName, fileName, "Source", "{}.####.exr".format(fileName)).replace("\\","/")
 
 pathCache = {
+  "Debris": { },
+  "Glass": { },
   "Lensflares/Misc": {
     "A019C016_150207_R3FI_FPS120": {
         "numOfFrames": 1001,
@@ -2775,6 +2777,8 @@ data = [
     ("Cloth", []),
     ("Debug", []),
     ("Dirt", []),
+    ("Debris", []),
+    ("Glass", []),
     ("Feathers", []),
     ("Fire", [
         ("Flames", []),
