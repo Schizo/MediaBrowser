@@ -23,9 +23,7 @@ class ThumbnailItem(QtGui.QLabel):
 
         head, self.fileName = os.path.split(fileName)
 
-
-        #todo get rid of hardcoded slashes
-        self.dirPath = settings.rootPath + settings.currentCategory + "/" + fileName + "/Thumbnails/"
+        self.dirPath = settings.thumbPath(settings.currentCategory, fileName)
         self.composedPath =  self.dirPath + self.fileName +  ".0001.jpg"
         
         self.pixmap = QtGui.QPixmap(self.composedPath)

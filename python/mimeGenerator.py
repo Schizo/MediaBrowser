@@ -20,7 +20,10 @@ class MimeGenerator(QObject):
 
 
     def itemDragged(self, itemID ):
-    	self.metaData =  settings.pathCache[settings.currentCategory][str(itemID)]
+        print "Dragged"
+    	self.metaData = settings.pathCache[settings.currentCategory][str(itemID)]
+        self.category = settings.currentCategory
+        self.itemID   = str(itemID) # might be QString
 
         #print settings.pathCache[self.parent.currentCategory][str(itemID)]
         drag = QtGui.QDrag(self.parent)
@@ -36,17 +39,30 @@ class MimeGenerator(QObject):
 
 
     def generateNukeTCL(self):
+        formatStr = "{} {} 1".format(self.metaData['width'], self.metaData['height']);
+        sourcePath = settings.sourcePath(self.category, self.itemID)
+        proxyPath = settings.proxyPath(self.category, self.itemID)
         command = ""
         command += """Read {{
             inputs 0
-            file C:/Users/PC/Desktop/Projects/Elementsbrowser/ElementsBrowserPY/python/Categories/Cloth/A002C002_140913_FPS120/Thumbnails/A002C002_140913_FPS120.####.jpg
-            origfirst {startFrame}
-            origlast {startFrame}
-            first {startFrame}
-            format {imageWidth}
-            label \"ElementsbrowserID# {id} \"
-            }}""".format(**self.metaData) 
+            file \"{4}\"
+            proxy \"{5}\"
+            origfirst {0}
+            origlast {1}
+            first {0}
+            last {1}
+            format \"{2}\"
+            proxy_format \"{2}\"
+            label \"ElementsbrowserID# {3}\"
+            }}""".format(self.metaData['startFrame'],
+                         self.metaData['startFrame'] + self.metaData['numOfFrames'],
+                         formatStr,
+                         self.metaData['id'],
+                         sourcePath,
+                         proxyPath)
+        print command
         return command
+        #
 
 
     def createPixmap(self):

@@ -1,7 +1,9 @@
+import os
+
 if __debug__:
     rootPath = "Categories/"
 else:
-    rootPath = "W:/Categories"
+    rootPath = "W:/Categories/"
 
 
 showConfig = {"startCategory": 'Fire/Flames'}
@@ -22,6 +24,16 @@ thumbnails  = {
 }
 
 about = {"Author":"Yafes Sahin", "Idea":["Julian Weiss", "Yafes Sahin"], "name":"Elementsbrowser", "version": "v. 0.2"}
+
+def thumbPath(categoryName, fileName):
+    return os.path.join(rootPath, categoryName, fileName, "Thumbnails", "").replace("\\","/")
+
+def proxyPath(categoryName, fileName):
+    return os.path.join(rootPath, categoryName, fileName, "Proxy", "{}.####.jpg".format(fileName)).replace("\\","/")
+
+def sourcePath(categoryName, fileName):
+    # replacing backslashes is necessary because Nuke doesn't do well with them
+    return os.path.join(rootPath, categoryName, fileName, "Source", "{}.####.exr".format(fileName)).replace("\\","/")
 
 pathCache = {
   "Lensflares/Misc": {
