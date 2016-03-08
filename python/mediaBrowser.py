@@ -30,7 +30,7 @@ class ElementsBrowser(QtGui.QTabWidget):
         hbox.addWidget(splitter)
         btn = QtGui.QPushButton("test")
 
-        self.addTab(splitter, "Yeah")
+        self.addTab(splitter, "Browse")
         self.addTab(btn, "Manage Elements")
             
 
