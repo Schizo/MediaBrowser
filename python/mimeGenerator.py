@@ -15,7 +15,7 @@ class MimeGenerator(QObject):
         super(MimeGenerator, self).__init__(parent=parent)
         self.parent = parent
         self.signalItemDragged.connect(self.itemDragged)
-        self.text = "lol"
+        self.text = ""
         pass
 
 
@@ -60,9 +60,8 @@ class MimeGenerator(QObject):
                          self.metaData['id'],
                          sourcePath,
                          proxyPath)
-        print command
         return command
-        #
+        
 
 
     def createPixmap(self):

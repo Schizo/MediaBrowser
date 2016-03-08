@@ -6,7 +6,6 @@ import settings
 
 class ThumbnailItem(QtGui.QLabel):
     """Represents an Elemement within a view, contains an Image and TextFields"""
-
     signalItemDragged = pyqtSignal(str, name='itemDragged')
 
     def __init__(self, parent, filepath=None):
@@ -15,7 +14,7 @@ class ThumbnailItem(QtGui.QLabel):
         self.setAcceptDrops(True)
         self.signalItemDragged.connect(parent.signalItemDragged)
 
-        self.text = "wvisssss"
+        self.text = "empty text"
         self.key = ""    
 
     def setData(self, fileName):
@@ -38,7 +37,8 @@ class ThumbnailItem(QtGui.QLabel):
     #which is consuming ressources
 
     def mousePressEvent(self, event):
-        print self.parent().parent.openMenu()
+        if event.button() == QtCore.Qt.RightButton:
+            print self.parent().parent.openMenu()
 
 
     def mouseMoveEvent(self, event):
@@ -52,8 +52,8 @@ class ThumbnailItem(QtGui.QLabel):
         self.setPixmap(self.pixmap)
 
     def mousePressEvent(self, event):
-        self.signalItemDragged.emit(self.fileName)
         if event.button() == QtCore.Qt.LeftButton:
+            self.signalItemDragged.emit(self.fileName)
             
             print "owww"
             # drag = QtGui.QDrag(self)
@@ -69,14 +69,6 @@ class ThumbnailItem(QtGui.QLabel):
             #drag.exec_()
             #dropAction = drag.start(QtCore.Qt.MoveAction)
 
-
-    # def mouseMoveEvent(self, e):
-    #     drag = QtGui.QDrag(self)
-    #     mimeData = QtCore.QMimeData()
-    #     drag.setMimeData(mimeData)
-
-    #     drag.setPixmap(QtGui.QPixmap.fromImage(self.createPixmap()))
-    #     dropAction = drag.start(QtCore.Qt.MoveAction)
 
     def createPixmap(self):
         """Creates the pixmap shown when this label is dragged."""
@@ -95,23 +87,12 @@ class ThumbnailItem(QtGui.QLabel):
         painter.end()
         return image
 
-
-
-    # def dragEnterEvent(self, e):
-    #     print "dragging started in BrowserViewerItem."
-
-    # def dragMoveEvent(self, e):
-    #     print "drag"
-
-    
-
-
-
 class BrowserViewerItem(QtGui.QWidget):
     def __init__(self, parent, filepath=None):
         super(BrowserViewerItem, self).__init__(parent=parent)
         self.setObjectName("thumbnail")
         self.parent = parent
+        
         #init layout
         self.widgetsLayout = QtGui.QVBoxLayout()
         self.widgetsLayout.setSpacing(0)
