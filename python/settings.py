@@ -5,6 +5,7 @@ if __debug__:
 else:
     rootPath = "W:/Categories/"
 
+appPath = {"photoshop":"", "rv":"", "vlc":""}
 
 showConfig = {"startCategory": 'Fire/Flames'}
 currentCategory = "Fire/Flames"

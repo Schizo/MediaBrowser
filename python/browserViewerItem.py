@@ -4,9 +4,12 @@ from PyQt4.QtCore import QObject, pyqtSignal
 from PyQt4.QtGui import *
 import settings
 
+
 class ThumbnailItem(QtGui.QLabel):
     """Represents an Elemement within a view, contains an Image and TextFields"""
     signalItemDragged = pyqtSignal(str, name='itemDragged')
+    #menu = ThumbContextMenu() 
+
 
     def __init__(self, parent, filepath=None):
         super(ThumbnailItem, self).__init__(parent=parent)
@@ -15,7 +18,8 @@ class ThumbnailItem(QtGui.QLabel):
         self.signalItemDragged.connect(parent.signalItemDragged)
 
         self.text = "empty text"
-        self.key = ""    
+        self.key = ""
+    
 
     def setData(self, fileName):
         self.fileName = fileName
@@ -36,11 +40,6 @@ class ThumbnailItem(QtGui.QLabel):
     #As we build this object for every Element
     #which is consuming ressources
 
-    def mousePressEvent(self, event):
-        if event.button() == QtCore.Qt.RightButton:
-            print self.parent().parent.openMenu()
-
-
     def mouseMoveEvent(self, event):
         currentFrame =  str(max(event.x()/4, 1)) 
         self.scrubValue = currentFrame.zfill(4)
@@ -54,21 +53,11 @@ class ThumbnailItem(QtGui.QLabel):
     def mousePressEvent(self, event):
         if event.button() == QtCore.Qt.LeftButton:
             self.signalItemDragged.emit(self.fileName)
-            
-            print "owww"
-            # drag = QtGui.QDrag(self)
-            # mimeData = QtCore.QMimeData()
-            # mimeData.setText(self.id)
-            # drag.setMimeData(mimeData)
-
-            # drag.setPixmap(QtGui.QPixmap.fromImage(self.createPixmap()))
-            # if drag.exec_(QtCore.Qt.CopyAction | QtCore.Qt.MoveAction) == QtCore.Qt.MoveAction:
-            #     print 'moved'
-            # else:
-            #     print 'copied'
-            #drag.exec_()
-            #dropAction = drag.start(QtCore.Qt.MoveAction)
-
+        elif event.button() == QtCore.Qt.RightButton:
+            parentPosition = self.mapToGlobal(event.pos())
+            self.parent().parent.menu.setFileData(self.scrubValue, self.fileName)
+            self.parent().parent.menu.move(parentPosition)
+            self.parent().parent.menu.show()
 
     def createPixmap(self):
         """Creates the pixmap shown when this label is dragged."""
@@ -92,7 +81,7 @@ class BrowserViewerItem(QtGui.QWidget):
         super(BrowserViewerItem, self).__init__(parent=parent)
         self.setObjectName("thumbnail")
         self.parent = parent
-        
+
         #init layout
         self.widgetsLayout = QtGui.QVBoxLayout()
         self.widgetsLayout.setSpacing(0)
@@ -172,3 +161,4 @@ class BrowserViewerItem(QtGui.QWidget):
 
         self.frameInfo.setText(str(self.numOfFrames) + " @ " + str(self.fps) + " fps")
         self.id.setText("# " + str(self.index))
+

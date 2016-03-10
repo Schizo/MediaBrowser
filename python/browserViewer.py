@@ -14,6 +14,33 @@ from PyQt4.QtGui import *
 from browserCategories import BrowserCategories
 from mimeGenerator import MimeGenerator
 
+class ThumbContextMenu(QtGui.QMenu):
+    def __init__(self):
+        super(ThumbContextMenu, self).__init__()
+        self.addAction("Open EXR Photoshop", self.openPhotoshop)
+        self.addAction("Open JPG Photoshop", self.openPhotoshop)
+        self.addAction("Open EXR in RV", self.openRV)
+        self.addAction("Open JPG in RV", self.openRV)
+        self.addAction("Open Folder Location", self.openFolder)
+        self.addAction("Remove from DB")
+
+    def setFileData(self, scrubFrame, fileName):
+        constructPath = settings.sourcePath(settings.currentCategory, fileName)
+        self.openPath = constructPath.replace('####', scrubFrame.zfill(4))
+
+
+    def openPhotoshop(self):
+        print "opening Photoshop"
+        print self.openPath
+
+    def openRV(self):
+        print "opening RV"
+
+    def openFolder(self):
+        print "opening Folder"
+
+
+
 class BrowserViewer(QtGui.QListWidget):
     
     categoryChanged = pyqtSignal(str, name='categoryChanged')
@@ -25,12 +52,13 @@ class BrowserViewer(QtGui.QListWidget):
         super(BrowserViewer, self).__init__(parent)
         self.currentCategory = settings.showConfig["startCategory"]
         self.initUI()
+        self.menu = ThumbContextMenu()
         
         self.mimeGenerator = MimeGenerator(self)
         self.categoryChanged.connect(self.changeCategory)
         self.signalItemDragged.connect(self.mimeGenerator.signalItemDragged)
 
-        self.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu )
+        self.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
         self.customContextMenuRequested.connect(self.openMenu)
 
 
@@ -42,15 +70,12 @@ class BrowserViewer(QtGui.QListWidget):
    
 
     def initUI(self):
-
         self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
         self.itemSelectionChanged.connect(self.selectedItems)
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.setSizePolicy(sizePolicy)
 
-        quitAction = QAction("Quit", self)
-        quitAction.triggered.connect(qApp.quit)
-        self.addAction(quitAction)
+
 
         self.setViewMode(QtGui.QListView.IconMode)
         self.setResizeMode(QtGui.QListView.Adjust)
@@ -68,20 +93,18 @@ class BrowserViewer(QtGui.QListWidget):
             self.setItemWidget(item, previewWindow)
 
 
-        #self.setGeometry(300, 300, 1024, 1024)
         self.populateWidgets(settings.pathCache[self.currentCategory])
 
         self.setWindowTitle(settings.about["name"])
         self.show()
 
 
-    def openMenu(self):
-        print "openMenu"
-
-
-    def selectedItems(self):
-        print "waiting to be implemented"
+    def selectedItems(self, event):
+        print "waiting to be implemented: selectedItems"
         pass
+
+    def mousePressEvent(self, e):
+        print e.pos()
 
 
     def dragEnterEvent(self, e):

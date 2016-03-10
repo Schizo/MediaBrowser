@@ -37,6 +37,10 @@ class ElementsBrowser(QtGui.QTabWidget):
         QtGui.QApplication.setStyle(QtGui.QStyleFactory.create('Cleanlooks'))
         self.setWindowTitle('ElementsBrowser')
         self.show()
+        
+
+    def mousePressEvent(self, event):
+        print event.pos()
 
 def main():
     app = QtGui.QApplication(sys.argv)
