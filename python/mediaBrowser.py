@@ -3,6 +3,7 @@ from PyQt4 import QtGui, QtCore
 
 from browserViewer import BrowserViewer
 from browserViewer import BrowserCategories
+from sequenceAdder import SequenceAdder
 
 class ElementsBrowser(QtGui.QTabWidget):
     def __init__(self):
@@ -26,13 +27,12 @@ class ElementsBrowser(QtGui.QTabWidget):
         splitter.setSizes([200, 400])
         self.setMinimumWidth(840)
         self.setMinimumHeight(840)
-        
-        hbox.addWidget(splitter)
-        btn = QtGui.QPushButton("test")
+
+        sequenceAdder = SequenceAdder(self)
 
         self.addTab(splitter, "Browse")
-        self.addTab(btn, "Manage Elements")
-            
+        self.addTab(sequenceAdder, "Manage Elements")
+
 
         QtGui.QApplication.setStyle(QtGui.QStyleFactory.create('Cleanlooks'))
         self.setWindowTitle('ElementsBrowser')
