@@ -59,7 +59,7 @@ class BrowserViewer(QtGui.QListWidget):
         self.signalItemDragged.connect(self.mimeGenerator.signalItemDragged)
 
         self.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
-        self.customContextMenuRequested.connect(self.openMenu)
+        # self.customContextMenuRequested.connect(self.openMenu)
 
 
     def changeCategory(self, item):
