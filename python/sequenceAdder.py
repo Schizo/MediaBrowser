@@ -37,9 +37,9 @@ def findCategories(prePath, elements):
             res = res + findCategories(itemTxt + "/", children)
     return res
 
-# TODO: cancel button
 class SequenceAdder(QtGui.QFrame):
     logUpdate = pyqtSignal(str, name='logUpdate')
+    convertDone = pyqtSignal(int, name='convertDone')
 
     def __init__(self, parent):
         self.parent = parent
@@ -94,8 +94,23 @@ class SequenceAdder(QtGui.QFrame):
                  # print line
         self.process.wait()
 
+        self.convertDone.emit(int(self.process.returncode))
+
+
+
     def onLogUpdate(self, line):
         self.logView.appendPlainText(line)
+
+    def onConvertDone(self, returncode):
+        self.done()
+
+        # success
+        if returncode == 0:
+            pass # TODO: add to DB
+            # need to generate previously unused ID (maximum of all existing ids in pathCache + 1)
+            #                  width, height from conversion process
+            #                  fps from text field (can't get from conversion process for image sequences)
+            #                  startframe / numframes from conversion process
 
     def convertClicked(self):
         # TODO: get progress and done as well as ability to cancel
