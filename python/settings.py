@@ -13,7 +13,10 @@ if __debug__:
 else:
     pathCachePath = "W:/DB/pathcache.json"
 
-appPath = {"photoshop":"", "rv":"", "vlc":""}
+appPath = {"photoshop":"C:/Program Files/Adobe/Adobe Photoshop CC 2015/Photoshop.exe",
+           "rv":"C:/Program Files/Tweak/RV/bin/rv.exe",
+           "explorer": "C:/Windows/explorer.exe",
+           "djv": "C:/Program Files/djv-1.1.0-Windows-64/bin/djv_view.com"}
 
 showConfig = {"startCategory": 'Fire/Flames'}
 currentCategory = "Fire/Flames"
@@ -33,6 +36,9 @@ thumbnails  = {
 }
 
 about = {"Author":"Yafes Sahin", "Idea":["Julian Weiss", "Yafes Sahin"], "Additional Coding":"Marcel Ruegenberg", "name":"Elementsbrowser", "version": "v. 0.2"}
+
+def locationPath(categoryName, fileName):
+    return os.path.join(rootPath, categoryName, fileName).replace("\\","/")
 
 def thumbPath(categoryName, fileName):
     return os.path.join(rootPath, categoryName, fileName, "Thumbnails", "").replace("\\","/")
@@ -76,6 +82,13 @@ def nextID():
                 if theID >= nextID0:
                     nextID0 = theID + 1
     return nextID0
+
+def removeItem(category, filename):
+    # TODO: implemented
+    #       1) delete from DB (maybe just set isVisible to 0 (and implement that this flag is actually used))
+    #       2) persist the DB
+    #       3) update the view
+    print("remove {} {}".format(category,filename))
 
 data = [
     ("Blood", []),
