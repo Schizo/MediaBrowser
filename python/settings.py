@@ -1,5 +1,7 @@
 import os
 import json
+import shutil
+import time
 
 if __debug__:
     rootPath = "Categories/"
@@ -46,6 +48,34 @@ def sourcePath(categoryName, fileName):
 print("Loading file {}".format(pathCachePath))
 with open(pathCachePath,'r') as dbfile:
     pathCache = json.load(dbfile)
+
+def persistPathCache():
+    global pathCache
+    global pathCachePath
+
+    # backup copy
+    timestamp = int(time.time())
+    (fn,ext) = os.path.splitext(os.path.split(pathCachePath)[1])
+    shutil.copy(pathCachePath,os.path.split(pathCachePath)[0] + "/bak/" + "{}.{}.{}".format(fn, str(timestamp), ext))
+
+    with open(pathCachePath, 'w') as dbfile:
+         json.dump(pathCache, dbfile, indent=4)
+
+
+nextID0 = None
+def nextID():
+    global nextID0 # ya ya, I know... globals are evil
+    if nextID0:
+        nextID0 += 1
+    else:
+        nextID0 = 0
+        # go through the path cache and find an unused ID
+        for p in pathCache:
+            for it in pathCache[p]:
+                theID = pathCache[p][it]["id"]
+                if theID >= nextID0:
+                    nextID0 = theID + 1
+    return nextID0
 
 data = [
     ("Blood", []),

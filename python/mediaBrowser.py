@@ -31,7 +31,7 @@ class ElementsBrowser(QtGui.QTabWidget):
         sequenceAdder = SequenceAdder(self)
 
         self.addTab(splitter, "Browse")
-        self.addTab(sequenceAdder, "Manage Elements")
+        self.addTab(sequenceAdder, "Add Elements")
 
 
         QtGui.QApplication.setStyle(QtGui.QStyleFactory.create('Cleanlooks'))

@@ -1,10 +1,10 @@
-# TODO: cleanup imports
 import os, sys
 import nuke
 import time
 import tempfile
 import subprocess, multiprocessing
 import math
+import json
 
 # how to use: runConverter.bat [input-folder-name] [category name]
 
@@ -56,13 +56,13 @@ class SequenceMov:
 # `done_callback` is called when the whole conversion is finished.
 #
 # This function returns as soon as the conversion was started (ie after a few seconds instead of minutes)
-def convertSequence(input_folder, category_name, thread_count=0, progress_callback=None, done_callback=None):
+def convertSequence(input_folder, category_name, thread_count=0, done_callback=None):
     if not os.path.exists("W:\\Categories\\" + category_name):
         print( "Invalid category name ", category_name)
-        return
+        return None
     if not os.path.exists(input_folder):
         print("Invalid input folder ", input_folder)
-        return
+        return None
     if thread_count == 0:
         thread_count = multiprocessing.cpu_count()
 
@@ -136,9 +136,13 @@ def convertSequence(input_folder, category_name, thread_count=0, progress_callba
     tempdir   = tempfile.mkdtemp()
     print ("tempdir is ", tempdir)
 
+    # contains metadata from conversion process
+    results = []
+
     # Generate Nuke scripts with the correct paths etc in a temporary directory
     nxttmpfile = 0
     for seq in sequences:
+        cur_metadata = {}
         reader['file'].fromUserText(os.path.join(input_folder, seq.inputpath()))
 
         # determine info from Read node
@@ -146,6 +150,14 @@ def convertSequence(input_folder, category_name, thread_count=0, progress_callba
         aspect_ratio = input_dims[0] / float(input_dims[1])
         thumb_height = int(thumb_width / aspect_ratio)
         input_range = (int(nuke.toNode("Read1")['first'].getValue()), int(nuke.toNode("Read1")['last'].getValue()))
+        cur_metadata["name"] = seq.basename()
+        cur_metadata["width"] = input_dims[0]
+        cur_metadata["height"] = input_dims[1]
+        cur_metadata["startFrame"] = input_range[0]
+        cur_metadata["numOfFrames"] = input_range[1] - input_range[0]
+        nuke_metadata = nuke.toNode("Read1").metadata()
+        cur_metadata["fps"] = int(nuke_metadata['input/frame_rate'])
+        cur_metadata["extra_metadata"] = nuke_metadata
 
         # Set thumbnail retiming
         thumb_retime['input.first'].setValue(input_range[0])
@@ -176,12 +188,18 @@ def convertSequence(input_folder, category_name, thread_count=0, progress_callba
         tempfiles.append((filepath, "Write_Source", input_range[0], input_range[1]))
         nxttmpfile += 1
 
+        results.append(cur_metadata)
+
     print "Starting conversion..."
 
-    nuke.threading.Thread( target=do_conversion, args=(tempfiles, tempdir, thread_count, progress_callback, done_callback)).start()
-    print "Started conversion"
+    do_conversion(tempfiles, tempdir, thread_count)
+    print "Finished conversion"
 
-def do_conversion(tempfiles, tempdir, thread_count, progress_callback, done_callback):
+    print os.path.abspath('conversion_metadata.json')
+    with open('conversion_metadata.json', 'w') as dbfile:
+        json.dump(results, dbfile, indent=4)
+
+def do_conversion(tempfiles, tempdir, thread_count):
     tmpfilecount = len(tempfiles)
     cur_progress = 0
 
@@ -203,20 +221,18 @@ def do_conversion(tempfiles, tempdir, thread_count, progress_callback, done_call
         for p in cur_processes:
             p.wait()
             cur_progress += 1.0 / (tmpfilecount * thread_count)
-            if progress_callback is not None:
-                nuke.executeInMainThread(progress_callback, cur_progress)
-
-
 
     # Cleanup
-    os.unlink(tempdir)
-
-    if done_callback is not None:
-        nuke.executeInMainThread(done_callback)
+    try:
+        os.unlink(tempdir)
+    except:
+        print "Unexpected error when removing tmp dir:", sys.exc_info()[0]
 
 if __name__ == "__main__":
-    def progress(p):
-        print ("PROGRESS ", str(p))
+    results = []
     def done():
         print "DONE"
-    convertSequence(sys.argv[1], sys.argv[2], 4, progress, done) # maybe limit CPU count? (because the HDD becomes the bottleneck)
+
+    convertSequence(sys.argv[1], sys.argv[2], 8, done) # maybe limit CPU count? (because the HDD becomes the bottleneck)
+
+    exit(0)

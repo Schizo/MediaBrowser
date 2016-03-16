@@ -4,7 +4,11 @@ from PyQt4.QtGui import *
 import subprocess
 import threading
 import settings
+import json
 
+# TODO: accept drag/drop from explorer
+#       see http://stackoverflow.com/questions/8568500/pyqt-getting-file-name-for-file-dropped-in-app
+#       and http://zetcode.com/gui/pyqt4/dragdrop/
 class FileBrowseWidget(QtGui.QWidget):
     def __init__(self, parent, do_folder=False):
         super(FileBrowseWidget, self).__init__(parent)
@@ -77,8 +81,11 @@ class SequenceAdder(QtGui.QFrame):
 
         self.logView.appendPlainText("")
 
-    def done(self):
-        self.lbl.setText("")
+    def done(self, setSuccess=False):
+        if setSuccess:
+            self.lbl.setText("DONE")
+        else:
+            self.lbl.setText("")
         self.convertButton.setEnabled(True)
         self.cancelButton.setEnabled(False)
 
@@ -94,9 +101,8 @@ class SequenceAdder(QtGui.QFrame):
                  # print line
         self.process.wait()
 
+        print "conversion done..." + str(self.process.returncode)
         self.convertDone.emit(int(self.process.returncode))
-
-
 
     def onLogUpdate(self, line):
         self.logView.appendPlainText(line)
@@ -106,11 +112,30 @@ class SequenceAdder(QtGui.QFrame):
 
         # success
         if returncode == 0:
-            pass # TODO: add to DB
+            print "SUCCESS"
+
+            with open('conversion_metadata.json', 'r') as dbfile:
+                results = json.load(dbfile)
+                for r in results:
+                    theID = settings.nextID()
+                    it = r.copy()
+                    it["id"] = theID
+                    nm = r["name"]
+                    del it["name"]
+                    cat = str(self.categoryChooser.currentText())
+                    settings.pathCache[cat][nm] = it
+                settings.persistPathCache()
+
+            try:
+                os.unlink('conversion_metadata.json')
+            except:
+                print "Unexpected error when removing tmp file:", sys.exc_info()[0]
             # need to generate previously unused ID (maximum of all existing ids in pathCache + 1)
             #                  width, height from conversion process
             #                  fps from text field (can't get from conversion process for image sequences)
             #                  startframe / numframes from conversion process
+            # idea for el-cheapo inter process communication: the adder creates a JSON with the metadata on finishing
+            # (or sends the JSON string back)
 
     def convertClicked(self):
         # TODO: get progress and done as well as ability to cancel
@@ -118,6 +143,7 @@ class SequenceAdder(QtGui.QFrame):
         #       also http://stackoverflow.com/questions/375427/non-blocking-read-on-a-subprocess-pipe-in-python/4896288#4896288
 
         self.logUpdate.connect(self.onLogUpdate)
+        self.convertDone.connect(self.onConvertDone)
 
         threading.Thread(target=self.callConvert, args=(str(self.fileBrowser.fnText.text()), str(self.categoryChooser.currentText())) ).start()
 
