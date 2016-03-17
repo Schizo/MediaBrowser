@@ -5,6 +5,7 @@ import subprocess
 import threading
 import settings
 import json
+import sys, os
 
 # TODO: accept drag/drop from explorer
 #       see http://stackoverflow.com/questions/8568500/pyqt-getting-file-name-for-file-dropped-in-app
@@ -116,11 +117,13 @@ class SequenceAdder(QtGui.QFrame):
 
             with open('conversion_metadata.json', 'r') as dbfile:
                 results = json.load(dbfile)
+                print("Got {} results".format(len(results)))
                 for r in results:
                     theID = settings.nextID()
                     it = r.copy()
                     it["id"] = theID
                     nm = r["name"]
+                    print "Adding ", nm
                     del it["name"]
                     cat = str(self.categoryChooser.currentText())
                     settings.pathCache[cat][nm] = it
@@ -129,7 +132,7 @@ class SequenceAdder(QtGui.QFrame):
             try:
                 os.unlink('conversion_metadata.json')
             except:
-                print "Unexpected error when removing tmp file:", sys.exc_info()[0]
+                print("Unexpected error when removing tmp file {}: {}".format(os.path.abspath('conversion_metadata.json'), sys.exc_info()[0]))
             # need to generate previously unused ID (maximum of all existing ids in pathCache + 1)
             #                  width, height from conversion process
             #                  fps from text field (can't get from conversion process for image sequences)

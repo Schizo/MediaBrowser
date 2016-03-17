@@ -67,7 +67,7 @@ def convertSequence(input_folder, category_name, thread_count=0, done_callback=N
         thread_count = multiprocessing.cpu_count()
 
     # potential sequence files
-    unsorted_files = filter(lambda f: os.path.splitext(f)[1][1:] in valid_extensions, os.listdir(input_folder))
+    unsorted_files = filter(lambda f: os.path.isfile(os.path.join(input_folder, f)) and (os.path.splitext(f)[1][1:] in valid_extensions), os.listdir(input_folder))
 
     # Sort by extension first to avoid the following failure case in the sequence-finding code below:
     # foo.0001.exr
@@ -195,9 +195,7 @@ def convertSequence(input_folder, category_name, thread_count=0, done_callback=N
     do_conversion(tempfiles, tempdir, thread_count)
     print "Finished conversion"
 
-    print os.path.abspath('conversion_metadata.json')
-    with open('conversion_metadata.json', 'w') as dbfile:
-        json.dump(results, dbfile, indent=4)
+    return results
 
 def do_conversion(tempfiles, tempdir, thread_count):
     tmpfilecount = len(tempfiles)
@@ -233,6 +231,20 @@ if __name__ == "__main__":
     def done():
         print "DONE"
 
-    convertSequence(sys.argv[1], sys.argv[2], 8, done) # maybe limit CPU count? (because the HDD becomes the bottleneck)
+    inp_folder = sys.argv[1]
+    results = convertSequence(inp_folder, sys.argv[2], 8, done)
+
+    # if the input dir has subfolders, assume that it is a folder with folders of image sequences
+    for mDir in os.listdir(inp_folder):
+        fullPath = os.path.join(inp_folder, mDir)
+        if not os.path.isdir(fullPath):
+            continue
+
+        results1 = convertSequence(fullPath, sys.argv[2], 8, done)
+        results += results1
+
+    print os.path.abspath('conversion_metadata.json')
+    with open('conversion_metadata.json', 'w') as dbfile:
+        json.dump(results, dbfile, indent=4)
 
     exit(0)
