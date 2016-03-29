@@ -2786,7 +2786,7 @@ data = [
         ("Sparks", []),
         ("Smoke", [])
         ]),
-    ("Leafes", []),
+    ("Leaves", []),
     ("Lensflares", [
         ("Bokeh", []),
         ("Lightleaks", []),
