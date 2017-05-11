@@ -85,14 +85,17 @@ class BrowserViewerItem(QtGui.QWidget):
         #init layout
         self.widgetsLayout = QtGui.QVBoxLayout()
         self.widgetsLayout.setSpacing(0)
-        self.widgetsLayout.setContentsMargins(5, 5, 5, 5)
+        contentsMargin = 1
+       
+        self.widgetsLayout.setContentsMargins(contentsMargin, contentsMargin, contentsMargin, contentsMargin)
         self.thumbnailItem = ThumbnailItem(parent, filepath)
-
+       
         #top Meta
         self.topWidget = QtGui.QLabel()
         self.topWidget.setObjectName("topWidget")
         self.topLayout = QtGui.QHBoxLayout()
         self.topLayout.setSpacing(0)
+        contentsMargin = 0
         self.topLayout.setContentsMargins(1, 1, 1, 1)
 
 

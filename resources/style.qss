@@ -334,10 +334,20 @@ QLabel#topWidget{
    background-color:#1c1c1c;
 }
 
+QWidget#thumbnail
+{
+    color: #FFFFFF;
+    /*background-color:#373737;*/
+    background-color:#FFFFFF;
+    border-width: 1px;
+}
+
 QLabel#thumbnail
 {
-    color: #ff00ff;
-    background-color:#373737;
+    color: #FFFFFF;
+    /*background-color:#373737;*/
+    background-color:#FFFFFF;
+    border-width: 1px;
 }
 
 
